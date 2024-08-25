@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #e9f5ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        h2 {
+            color: #004a9e;
+            margin-bottom: 30px;
+            font-size: 32px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus {
+            border-color: #004a9e;
+            box-shadow: 0 0 0 0.2rem rgba(0, 74, 158, 0.25);
+        }
+        .btn-primary {
+            width: 100%;
+            border-radius: 8px;
+            background-color: #004a9e;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #003b7a;
+        }
+        .login-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #004a9e;
+            text-decoration: none;
+        }
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <!-- Bootstrap Tooltip JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(function (tooltip) {
+                new bootstrap.Tooltip(tooltip);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username:</label>
+                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Username" data-bs-toggle="tooltip" data-bs-placement="right" title="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.">
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password:</label>
+                <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control" placeholder="Password" data-bs-toggle="tooltip" data-bs-placement="right" title="Your password can’t be too similar to your other personal information. Must contain at least 8 characters. Cannot be a commonly used password or entirely numeric.">
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
+                <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="form-control" placeholder="Confirm Password">
+            </div>
+            
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" name="{{ form.password_based_authentication.name }}" id="{{ form.password_based_authentication.id_for_label }}" class="form-check-input">
+                    <label class="form-check-label" for="{{ form.password_based_authentication.id_for_label }}">
+                        Password-based authentication:
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <a href="{% url 'login' %}" class="login-link">Already have an account? Login</a>
+    </div>
+</body>
+</html>

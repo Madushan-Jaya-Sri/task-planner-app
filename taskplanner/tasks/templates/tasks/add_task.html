@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if task %}{{ task.title }}{% else %}Add Task{% endif %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px; /* Adjust max-width as needed */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            box-shadow: none;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        }
+        .btn-save {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+        }
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+        .btn-back {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            text-align: center;
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+        }
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>{% if task %}Edit Task{% else %}Add Task{% endif %}</h1>
+            
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-save">Save</button>
+            </form>
+            
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-back">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
