@@ -27,6 +27,17 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 20px;
             box-sizing: border-box;
+            animation: pop-in 0.5s ease-in-out;
+        }
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         h2 {
             color: #007bff;
@@ -35,12 +46,22 @@
             text-align: center;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .form-group label {
+            width: 100px; /* Set a fixed width for labels */
+            margin-right: 10px;
+            text-align: right;
+            font-weight: bold;
         }
         .form-control {
+            flex: 1; /* Allow input boxes to take up the remaining space */
             border-radius: 8px;
             border: 1px solid #ced4da;
             box-shadow: none;
+            padding: 10px;
         }
         .form-control:focus {
             border-color: #007bff;
@@ -51,6 +72,8 @@
             border-radius: 8px;
             background-color: #007bff;
             border: none;
+            padding: 10px;
+            font-size: 16px;
         }
         .btn-primary:hover {
             background-color: #0056b3;
@@ -66,13 +89,21 @@
             text-decoration: underline;
         }
     </style>
+    
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username:</label>
+                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Password:</label>
+                <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="Enter password">
+            </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
         <a href="{% url 'register' %}" class="register-link">Register</a>

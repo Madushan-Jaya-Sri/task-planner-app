@@ -18,12 +18,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background-color 1s ease-in-out; /* Fading background color */
         }
         .container {
             width: 100%;
-            max-width: 800px; /* Adjust max-width as needed */
+            max-width: 600px; /* Adjust max-width as needed */
             padding: 20px;
             box-sizing: border-box;
+            animation: popUp 0.5s ease-out; /* Pop transition effect */
         }
         .form-container {
             background-color: #ffffff;
@@ -35,7 +37,7 @@
         h1 {
             color: #007bff;
             margin-bottom: 30px;
-            font-size: 24px;
+            font-size: 28px; /* Increase font size */
             text-align: center;
         }
         .form-group {
@@ -45,6 +47,7 @@
             border-radius: 8px;
             border: 1px solid #ced4da;
             box-shadow: none;
+            font-size: 16px; /* Increase input font size */
         }
         .form-control:focus {
             border-color: #007bff;
@@ -52,26 +55,50 @@
         }
         .btn-save {
             margin-top: 20px;
-            width: 100%;
+            width: auto; /* Auto width to make the button not too wide */
             background-color: #007bff;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px; /* More rounded buttons */
+            padding: 10px 30px; /* Adjust padding for a more elegant look */
+            font-size: 18px; /* Increase font size */
+            color: #ffffff;
+            text-transform: uppercase; /* Capitalize button text */
+            transition: background-color 0.3s ease-in-out; /* Smooth color transition */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .btn-save:hover {
             background-color: #0056b3;
         }
         .btn-back {
             display: block;
-            width: 100%;
+            width: auto; /* Auto width to make the button not too wide */
             margin-top: 10px;
-            text-align: center;
             background-color: #6c757d;
             color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px; /* More rounded buttons */
+            padding: 10px 30px; /* Adjust padding for a more elegant look */
+            font-size: 18px; /* Increase font size */
+            text-transform: uppercase; /* Capitalize button text */
+            transition: background-color 0.3s ease-in-out; /* Smooth color transition */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
         }
         .btn-back:hover {
             background-color: #5a6268;
+        }
+        @keyframes popUp {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -92,5 +119,12 @@
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.backgroundColor = '#e0e7ff'; // Change the background color on load with fading effect
+        });
+    </script>
 </body>
 </html>

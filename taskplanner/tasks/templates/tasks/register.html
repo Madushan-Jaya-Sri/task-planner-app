@@ -26,6 +26,17 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 40px;
             box-sizing: border-box;
+            animation: pop-in 0.5s ease-in-out;
+        }
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         h2 {
             color: #004a9e;
@@ -64,6 +75,7 @@
             text-decoration: underline;
         }
     </style>
+    
     <!-- Bootstrap Tooltip JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>

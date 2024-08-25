@@ -1,287 +1,312 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS (for icons) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-/* General Body and Layout Styling */
-body {
-    background-color: #f8f9fa;
-    color: #333;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Dashboard</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome CSS (for icons) -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #f8f9fa;
+                color: #333;
+                
+            }
+            .header {
+                background-color: #007bff;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+                position: relative; /* Add this */
+            }
+            .header img {
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+            }
+            .background {
+                background: url('{% static 'bg1.png' %}') no-repeat center center fixed;
+                background-size: cover;
+                height: 100vh;
+                padding: 20px;
+            }
+            .task-list {
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                padding: 20px;
+                animation: pagePopUp 0.8s ease-out;
+            }
+            @keyframes pagePopUp {
+                from {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            .task-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px; /* Space between cards */
+                justify-content: center; /* Center the cards horizontally */
+                margin-bottom: 20px; /* Space below each row */
+            }
+            .task-col {
+                flex: 0 1 calc(20% - 20px); /* Fixed width for each card */
+                box-sizing: border-box;
+            }
+            .card {
+                border-radius: 12px;
+                background: rgba(0, 123, 255, 0.1); /* Fading blue background */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                cursor: move; /* Show drag cursor */
+                width: 100%; /* Full width of grid item */
+                height: 300px; /* Fixed height for the card */
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                /* Add transition for smooth pop-up effect */
+                transform: scale(0.95);
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
+            .card:hover {
+                transform: scale(1);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+            .card-title {
+                font-size: 2rem; /* Increased font size for card titles */
+                color: #007bff; /* Blue color for the title */
+                text-align: center;
+                margin-bottom: 15px;
+            }
+            .card-description {
+                font-size: 1rem;
+                color: #555;
+                margin-bottom: 15px;
+            }
+            .card-text {
+                font-size: 1.1rem; /* Increased font size */
+                color: #777;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+            .card-text i {
+                margin-right: 8px; /* Space between icon and text */
+            }
+            .card-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 10px; /* Space between buttons */
+                margin-top: auto; /* Push buttons to the bottom of the card */
+            }
+            .btn-primary {
+                margin-top: 20px;
+                display: block;
+                text-align: center;
+            }
+            .logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 10px;
+    font-size: 0.8rem; /* Adjust size if needed */
 }
-
-.header {
-    background-color: #007bff;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-.header img {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-}
-
-.background {
-    background: url('{% static 'bg1.png' %}') no-repeat center center fixed;
-    background-size: cover;
-    height: 100vh;
-    padding: 20px;
-}
-
-/* Task List Styling */
-.task-list {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    padding: 20px;
-}
-
-.task-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Space between cards */
-    justify-content: center; /* Center the cards horizontally */
-    margin-bottom: 20px; /* Space below each row */
-}
-
-.task-col {
-    flex: 0 1 calc(20% - 20px); /* Fixed width for each card */
-    box-sizing: border-box;
-}
-
-/* Card Styling */
-.card {
-    border-radius: 12px;
-    background: rgba(0, 123, 255, 0.1); /* Fading blue background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    cursor: move; /* Show drag cursor */
-    width: 100%; /* Full width of grid item */
-    height: 300px; /* Fixed height for the card */
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.card-title {
-    font-size: 2rem; /* Increased font size */
-    color: #007bff; /* Blue color for the title */
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.card-description {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-.card-text {
-    font-size: 1.1rem; /* Increased font size */
-    color: #777;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.card-text i {
-    margin-right: 8px; /* Space between icon and text */
-}
-
-.card-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* Space between buttons */
-    margin-top: auto; /* Push buttons to the bottom of the card */
-}
-
-.btn-primary {
-    margin-top: 20px;
-    display: block;
-    text-align: center;
-}
-
-/* Add Task Card Styling */
-.add-task-card {
-    background: rgba(0, 123, 255, 0.1); /* Fading blue background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    text-align: center;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* Full width of grid item */
-    height: 100%; /* Match height of other cards */
-    box-sizing: border-box;
-    position: relative; /* Position for absolute elements inside */
-}
-
-.add-task-card .card-title {
-    font-size: 2rem; /* Ensure consistency with other card titles */
-    color: #007bff;
-    margin-bottom: 10px;
-}
-
-.add-task-card .image-container {
-    width: 80px;
-    height: 80px;
-    background-image: url('{% static 'plus_sign.jpeg' %}');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: 50%; /* Circular crop effect */
-    margin-top: 20px; /* Space between title and image */
-}
-
-/* Button Styling */
-.btn-edit, .btn-delete {
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-}
-
-.btn-edit {
-    background-color: #ffc107;
-}
-
-.btn-edit:hover {
-    background-color: #e0a800;
-}
-
-.btn-delete {
-    background-color: #dc3545;
-}
-
-.btn-delete:hover {
-    background-color: #c82333;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .task-col {
-        flex: 0 1 calc(25% - 20px); /* Adjust for medium screens */
-    }
-}
-
-@media (max-width: 992px) {
-    .task-col {
-        flex: 0 1 calc(33.33% - 20px); /* Adjust for small screens */
-    }
-}
-
-@media (max-width: 768px) {
-    .task-col {
-        flex: 0 1 calc(50% - 20px); /* Adjust for extra small screens */
-    }
-}
-
-    </style>
-</head>
-<body>
-    <div class="background">
-        <header class="header">
-            <h1>Task Dashboard</h1>
-            <p>Welcome, {{ request.user.username }}</p>
-            <img src="{% static 'profile_pic.jpeg' %}" alt="Profile Picture">
-            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
-        </header>
-        
-        <main class="container mt-4">
-            <div class="task-list">
-                <h2>Your Tasks</h2>
-                <div class="task-row" id="task-container">
-                    {% for task in tasks %}
-                        <div class="task-col" data-id="{{ task.id }}" draggable="true" ondragstart="drag(event)">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ task.title }}</h5>
-                                    <p class="card-description">{{ task.description }}</p>
-                                    <div class="card-text-container">
-                                        <p class="card-text">
-                                            <i class="fas fa-calendar-day"></i> {{ task.date }}
-                                        </p>
-                                        <p class="card-text">
-                                            <i class="fas fa-clock"></i> {{ task.time }}
-                                        </p>
-                                    </div>
-                                    <div class="card-buttons">
-                                        <a href="{% url 'edit_task' task.id %}" class="btn btn-edit">Edit</a>
-                                        <a href="{% url 'delete_task' task.id %}" class="btn btn-delete">Delete</a>
+            .add-task-card {
+                background: rgba(0, 123, 255, 0.1); /* Fading blue background */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+                text-align: center;
+                padding: 20px;
+                border-radius: 12px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%; /* Full width of grid item */
+                height: 100%; /* Match height of other cards */
+                box-sizing: border-box;
+                position: relative; /* Position for absolute elements inside */
+                /* Add transition for smooth pop-up effect */
+                transform: scale(0.95);
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
+            .add-task-card:hover {
+                transform: scale(1);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+            .add-task-card .card-title {
+                font-size: 1.5rem;
+                color: #007bff;
+                margin-bottom: 10px;
+            }
+            .add-task-card .image-container {
+                width: 80px;
+                height: 80px;
+                background-image: url('{% static 'plus_sign.jpeg' %}');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                border-radius: 50%; /* Circular crop effect */
+                margin-top: 20px; /* Space between title and image */
+            }
+            .btn-edit, .btn-delete {
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                font-weight: bold;
+                color: #fff;
+            }
+            .btn-edit {
+                background-color: #ffc107;
+            }
+            .btn-edit:hover {
+                background-color: #e0a800;
+            }
+            .btn-delete {
+                background-color: #dc3545;
+            }
+            .btn-delete:hover {
+                background-color: #c82333;
+            }
+            @media (max-width: 1200px) {
+                .task-col {
+                    flex: 0 1 calc(25% - 20px); /* Adjust for medium screens */
+                }
+            }
+            @media (max-width: 992px) {
+                .task-col {
+                    flex: 0 1 calc(33.33% - 20px); /* Adjust for small screens */
+                }
+            }
+            @media (max-width: 768px) {
+                .task-col {
+                    flex: 0 1 calc(50% - 20px); /* Adjust for extra small screens */
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="background">
+            <header class="header">
+                <h1>Task Dashboard</h1>
+                <p>Welcome, {{ request.user.username }}</p>
+                <img src="{% static 'profile_pic.jpeg' %}" alt="Profile Picture" class="profile-img">
+                <a href="{% url 'logout' %}" class="btn btn-danger logout-button">Logout</a>
+            </header>
+            
+            <main class="container mt-4">
+                <div class="task-list">
+                    <h2>Saved Tasks</h2>
+                    <div class="task-row" id="task-container">
+                        {% for task in tasks %}
+                            <div class="task-col" data-id="{{ task.id }}" draggable="true">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ task.title }}</h5>
+                                        <p class="card-description">{{ task.description }}</p>
+                                        <div class="card-text-container">
+                                            <p class="card-text">
+                                                <i class="fas fa-calendar-day"></i> {{ task.date }}
+                                            </p>
+                                            <p class="card-text">
+                                                <i class="fas fa-clock"></i> {{ task.time }}
+                                            </p>
+                                        </div>
+                                        <div class="card-buttons">
+                                            <a href="{% url 'edit_task' task.id %}" class="btn btn-edit">Edit</a>
+                                            <a href="{% url 'delete_task' task.id %}" class="btn btn-delete" onclick="confirmDeletion(event, '{{ task.title }}')">Delete</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% empty %}
+                        {% empty %}
+                            <div class="task-col">
+                                <div class="card add-task-card" onclick="window.location.href='{% url 'add_task' %}'">
+                                    <p class="card-title">Add New Task</p>
+                                    <div class="image-container"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
                         <div class="task-col">
                             <div class="card add-task-card" onclick="window.location.href='{% url 'add_task' %}'">
                                 <p class="card-title">Add New Task</p>
                                 <div class="image-container"></div>
                             </div>
                         </div>
-                    {% endfor %}
-                    {% if tasks %}
-                        <div class="task-col">
-                            <div class="card add-task-card" onclick="window.location.href='{% url 'add_task' %}'">
-                                <p class="card-title">Add New Task</p>
-                                <div class="image-container"></div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="task-col">
-                            <div class="card add-task-card" onclick="window.location.href='{% url 'add_task' %}'">
-                                <p class="card-title">Add New Task</p>
-                                <div class="image-container"></div>
-                            </div>
-                        </div>
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
-        </main>
-    </div>
+            </main>
+        </div>
+    
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Font Awesome JS (for icons) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+        <!-- Custom Script for Drag and Drop -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const taskContainer = document.getElementById('task-container');
+    
+                taskContainer.addEventListener('dragstart', function(event) {
+                    event.dataTransfer.setData('text/plain', event.target.closest('.task-col').getAttribute('data-id'));
+                    event.target.classList.add('dragging');
+                });
+    
+                taskContainer.addEventListener('dragend', function(event) {
+                    event.target.classList.remove('dragging');
+                });
+    
+                taskContainer.addEventListener('dragover', function(event) {
+                    event.preventDefault(); // Allow drop
+                    const draggingElement = document.querySelector('.dragging');
+                    const target = event.target.closest('.task-col');
+                    if (draggingElement && target && draggingElement !== target) {
+                        target.classList.add('drag-over');
+                    }
+                });
+    
+                taskContainer.addEventListener('dragleave', function(event) {
+                    event.target.closest('.task-col')?.classList.remove('drag-over');
+                });
+    
+                taskContainer.addEventListener('drop', function(event) {
+                    event.preventDefault();
+                    const taskId = event.dataTransfer.getData('text/plain');
+                    const target = event.target.closest('.task-col');
+                    const targetId = target ? target.getAttribute('data-id') : null;
+    
+                    if (taskId && targetId && taskId !== targetId) {
+                        const draggedElement = document.querySelector(`.task-col[data-id="${taskId}"]`);
+                        if (draggedElement && target) {
+                            taskContainer.insertBefore(draggedElement, target.nextSibling);
+                        }
+                    }
+                    document.querySelectorAll('.task-col').forEach(col => col.classList.remove('drag-over'));
+                });
+            });
+        </script>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- Font Awesome JS (for icons) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-    <!-- Custom Script for Drag and Drop -->
-    <script>
-        function drag(event) {
-            event.dataTransfer.setData("text/plain", event.target.closest('.task-col').getAttribute('data-id'));
+<script>
+    function confirmDeletion(event, taskTitle) {
+        event.preventDefault(); // Prevent the default link behavior
+        const confirmation = confirm(`Are you sure you want to delete the task: "${taskTitle}"?`);
+        if (confirmation) {
+            window.location.href = event.currentTarget.getAttribute('href');
         }
+    }
+</script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const taskContainer = document.getElementById('task-container');
-
-            taskContainer.addEventListener('dragover', function(event) {
-                event.preventDefault();
-            });
-
-            taskContainer.addEventListener('drop', function(event) {
-                event.preventDefault();
-                const taskId = event.dataTransfer.getData("text/plain");
-                const target = event.target.closest('.task-col');
-                const targetId = target ? target.getAttribute('data-id') : null;
-
-                if (taskId && targetId && taskId !== targetId) {
-                    // Perform the task reordering logic here
-                }
-            });
-        });
-    </script>
-</body>
+    </body>
+    
+    
 </html>
