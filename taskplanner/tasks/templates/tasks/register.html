@@ -74,6 +74,10 @@
         .login-link:hover {
             text-decoration: underline;
         }
+        .text-danger {
+            font-size: 0.9em;
+            color: red;
+        }
     </style>
     
     <!-- Bootstrap Tooltip JS -->
@@ -85,6 +89,26 @@
                 new bootstrap.Tooltip(tooltip);
             });
         });
+        // Function to show error pop-up with human-readable messages
+        function showErrorPopup(errors) {
+            // Create a temporary DOM element to parse the HTML error structure
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = errors;
+
+            let errorMessages = '';
+
+            // Find all <li> elements within the errorlist and extract the inner text
+            let errorItems = tempDiv.querySelectorAll('.errorlist li');
+
+            // Loop through each error and append it to the errorMessages string
+            errorItems.forEach(function(errorItem) {
+                errorMessages += errorItem.innerText + '\n';
+            });
+
+            // Display the extracted error messages in the alert
+            // alert(errorMessages);  // You can replace this with your custom modal if needed
+        }
+
     </script>
 </head>
 <body>
@@ -95,30 +119,45 @@
             
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">Username:</label>
-                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Username" data-bs-toggle="tooltip" data-bs-placement="right" title="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.">
+                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" placeholder="Username">
+                <div class="text-danger">
+                    {{ form.username.errors }}
+                </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.password1.id_for_label }}">Password:</label>
-                <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control" placeholder="Password" data-bs-toggle="tooltip" data-bs-placement="right" title="Your password can’t be too similar to your other personal information. Must contain at least 8 characters. Cannot be a commonly used password or entirely numeric.">
+                <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control" placeholder="Password">
+                <div class="text-danger">
+                    {{ form.password1.errors }}
+                </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
                 <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="form-control" placeholder="Confirm Password">
-            </div>
-            
-            <div class="form-group">
-                <div class="form-check">
-                    <input type="checkbox" name="{{ form.password_based_authentication.name }}" id="{{ form.password_based_authentication.id_for_label }}" class="form-check-input">
-                    <label class="form-check-label" for="{{ form.password_based_authentication.id_for_label }}">
-                        Password-based authentication:
-                    </label>
+                <div class="text-danger">
+                    {{ form.password2.errors }}
                 </div>
             </div>
             
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger mt-3">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% if form.errors %}
+            <script>
+                // If form has errors, pass them to the pop-up function
+                const formErrors = {{ form.errors.as_json|safe }};
+                showErrorPopup(formErrors);
+            </script>
+        {% endif %}
+
         <a href="{% url 'login' %}" class="login-link">Already have an account? Login</a>
     </div>
 </body>

@@ -5,7 +5,42 @@ from django.contrib.auth.decorators import login_required
 from .models import Task
 from .forms import TaskForm
 import datetime
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Task, Label, BackgroundImage
+from .forms import TaskForm
+import datetime
+import random
+from .gemini_request import send_gemini_request
 
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Task, Label, BackgroundImage
+from .forms import TaskForm
+import datetime
+import random
+from .gemini_request import send_gemini_request
+
+label_list = ['sleep', 'gym', 'study', 'play']
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from tasks.models import Task, Label
+import datetime
+import random
+
+
+from django.utils import timezone
+
+from django.utils import timezone
+import datetime
+import random
+from datetime import datetime
+
+import pytz
+
+from datetime import datetime
+import pytz
+from django.utils import timezone
 
 
 def add_task(request):
@@ -58,11 +93,17 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            print(form.errors)
+            return render(request, 'tasks/register.html', {'form': form})
     else:
         form = UserCreationForm()
-    return render(request, 'tasks/register.html', {'form': form})
+        return render(request, 'tasks/register.html', {'form': form})
+
+
 
 @login_required
 def user_logout(request):
@@ -78,42 +119,7 @@ label_list =['sleep','gym','study','play']
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Task, Label, BackgroundImage
-from .forms import TaskForm
-import datetime
-import random
-from .gemini_request import send_gemini_request
 
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Task, Label, BackgroundImage
-from .forms import TaskForm
-import datetime
-import random
-from .gemini_request import send_gemini_request
-
-label_list = ['sleep', 'gym', 'study', 'play']
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from tasks.models import Task, Label
-import datetime
-import random
-
-
-from django.utils import timezone
-
-from django.utils import timezone
-import datetime
-import random
-from datetime import datetime
-
-import pytz
-
-from datetime import datetime
-import pytz
-from django.utils import timezone
 
 @login_required
 def dashboard(request):
