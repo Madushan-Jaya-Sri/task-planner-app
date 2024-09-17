@@ -158,11 +158,13 @@ def dashboard(request):
             
             # Set the background image based on the predicted label
             if predicted_label == 'gym':
-                background_image = 'bg1.png'
+                background_image = 'bg1.jpg'
             elif predicted_label == 'sleep':
                 background_image = 'sleep1.jpeg'
             elif predicted_label == 'play':
                 background_image = 'play2.jpeg'
+            elif predicted_label == 'study':
+                background_image = 'study1.jpeg'
             # Add more conditions for other predictions here
             else:
                 background_image = 'default_background.jpg'
@@ -171,7 +173,7 @@ def dashboard(request):
     if current_time.hour < 11 and background_image == 'default_background.jpg':
         background_image = 'backgroundimg1.jpg'
     elif background_image == 'default_background.jpg':
-        background_image = 'bg1.png'
+        background_image = 'bg1.jpg'
 
     return render(request, 'tasks/dashboard.html', {
         'tasks': tasks,
